@@ -13,5 +13,5 @@ __pycache__/
 
 # Ignore Flutter dependencies
 .pub-cache/
-.packages
+
 .dart_tool/
