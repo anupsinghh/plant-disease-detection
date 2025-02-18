@@ -1,0 +1,45 @@
+# 🚀 Ignore Python Bytecode
+__pycache__/
+*.py[cod]
+
+# 🚀 Ignore Virtual Environment (if using venv)
+venv/
+env/
+
+# 🚀 Ignore Jupyter Notebook Checkpoints (if using Jupyter)
+.ipynb_checkpoints/
+
+# 🚀 Ignore Logs & Temporary Files
+*.log
+*.csv
+*.tsv
+*.sqlite3
+*.db
+.DS_Store  # macOS metadata file
+
+# 🚀 Ignore IDE & Editor Files
+.vscode/
+.idea/
+*.swp  # vim swap files
+
+# 🚀 Ignore Model & Training Artifacts
+model/*.h5
+model/*.hdf5
+model/*.tflite
+model/*.pb
+model/*.onnx
+model/*.pkl
+model/training_history.json
+
+# 🚀 Ignore Dataset (Optional: If dataset is large, store separately)
+dataset/
+*.zip  # If datasets are compressed
+
+# 🚀 Ignore Images & Large Files (Optional)
+*.png
+*.jpg
+*.jpeg
+
+# 🚀 Ignore Config & Credentials (if using API keys)
+config.json
+.env
