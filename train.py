@@ -61,7 +61,7 @@ print(f"✅ Class Labels Saved: {train_data.class_indices}")
 base_model = ResNet50(weights="imagenet", include_top=False, input_shape=(IMG_SIZE, IMG_SIZE, 3))
 
 # ✅ Unfreeze last 50 layers for fine-tuning
-for layer in base_model.layers[-50:]:
+for layer in base_model.layers[-20:]:
     layer.trainable = True
 
 # ✅ Custom Fully Connected Layers

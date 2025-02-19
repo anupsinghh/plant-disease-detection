@@ -2,14 +2,11 @@ from flask import Flask, request, render_template
 import cv2
 import numpy as np
 import os
-import json
+import glob
+import time
 from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
-
-import os
-import glob
-from tensorflow.keras.models import load_model
 
 # ✅ Automatically get the latest model file from 'model' directory
 MODEL_DIR = os.path.join(os.getcwd(), "model")
@@ -22,7 +19,6 @@ if model_files:
 else:
     print("❌ Error: No model file found in the 'model' directory!")
     model = None
-
 
 # ✅ Get class labels from dataset folder
 DATASET_PATH = os.path.join(os.getcwd(), "dataset", "train")  # Update this path if needed
@@ -67,7 +63,10 @@ def predict_image(image_path):
 def index():
     if request.method == "POST":
         file = request.files["image"]
-        file_path = "static/uploaded_image.jpg"
+        
+        # ✅ Generate a unique filename to prevent browser caching issues
+        timestamp = int(time.time())
+        file_path = f"static/uploaded_{timestamp}.jpg"
         file.save(file_path)
         
         result = predict_image(file_path)

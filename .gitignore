@@ -43,3 +43,4 @@ dataset/
 # 🚀 Ignore Config & Credentials (if using API keys)
 config.json
 .env
+.vercel
