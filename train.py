@@ -20,7 +20,7 @@ dataset_path = "dataset/"
 # ✅ Image Parameters
 IMG_SIZE = 128  # Keeping 128x128 to match dataset
 BATCH_SIZE = 32
-EPOCHS = 10  # 🔹 Increased for better learning
+EPOCHS = 1  # 🔹 Increased for better learning
 
 # ✅ Improved Data Augmentation
 datagen = ImageDataGenerator(
