@@ -10,6 +10,13 @@ from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.optimizers import Adam
 from datetime import datetime
 
+# ✅ Check GPU Availability
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    print(f"✅ GPU Available: {gpus}")
+else:
+    print("⚠️ No GPU found, using CPU.")
+
 # ✅ Ensure the model directory exists
 model_dir = "model"
 os.makedirs(model_dir, exist_ok=True)
@@ -18,21 +25,21 @@ os.makedirs(model_dir, exist_ok=True)
 dataset_path = "dataset/"
 
 # ✅ Image Parameters
-IMG_SIZE = 128  # Keeping 128x128 to match dataset
+IMG_SIZE = 128
 BATCH_SIZE = 32
-EPOCHS = 1  # 🔹 Increased for better learning
+EPOCHS = 10  # 🔹 Increased for better learning
 
 # ✅ Improved Data Augmentation
 datagen = ImageDataGenerator(
     rescale=1./255,
     validation_split=0.2,
-    rotation_range=30,  # Increased rotation
+    rotation_range=30,  
     width_shift_range=0.2,
     height_shift_range=0.2,
     shear_range=0.2,
-    zoom_range=0.3,  # Increased zoom
+    zoom_range=0.3,  
     horizontal_flip=True,
-    brightness_range=[0.8, 1.2],  # Adjust brightness
+    brightness_range=[0.8, 1.2],  
     fill_mode='nearest'
 )
 
@@ -61,7 +68,7 @@ for layer in base_model.layers[-50:]:
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
 x = Dense(256, activation="relu")(x)
-x = Dropout(0.3)(x)  # 🔹 Reduced dropout
+x = Dropout(0.3)(x)  
 x = Dense(256, activation="relu")(x)
 output = Dense(len(class_names), activation="softmax")(x)
 
@@ -76,8 +83,9 @@ model.compile(optimizer=optimizer, loss="categorical_crossentropy", metrics=["ac
 early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True, verbose=1)
 lr_scheduler = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=3, min_lr=1e-6, verbose=1)
 
-# ✅ Train Model
-history = model.fit(train_data, validation_data=val_data, epochs=EPOCHS, callbacks=[early_stopping, lr_scheduler])
+# ✅ Train Model on GPU if available
+with tf.device('/GPU:0' if gpus else '/CPU:0'):
+    history = model.fit(train_data, validation_data=val_data, epochs=EPOCHS, callbacks=[early_stopping, lr_scheduler])
 
 # ✅ Save training history
 history_path = os.path.join(model_dir, "training_history.json")
