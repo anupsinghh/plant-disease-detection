@@ -1,0 +1,17 @@
+# Ignore dataset folder
+dataset/
+PlantVillage/
+
+# Ignore build and cache files
+build/
+*.tflite
+*.h5
+
+# Ignore Python virtual environment (if used)
+venv/
+__pycache__/
+
+# Ignore Flutter dependencies
+.pub-cache/
+.packages
+.dart_tool/

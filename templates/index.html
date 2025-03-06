@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plant Disease Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h2>Upload an Image for Prediction</h2>
-    <form action="/" method="post" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required>
-        <input type="submit" value="Predict">
-    </form>
+    <div class="container">
+        <h1>🌱 Plant Disease Detection</h1>
+        <p>Upload an image of a plant leaf to detect disease.</p>
 
-    {% if image_path %}
-        <h3>Prediction: {{ label }} ({{ confidence|round(2) }}%)</h3>
-        <img src="{{ image_path }}" width="300">
-    {% endif %}
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if image_path %}
+        <div class="result">
+            <h3>Prediction: <span class="label">{{ label }}</span></h3>
+            <p>Confidence: <strong>{{ confidence|round(2) }}%</strong></p>
+            <img src="{{ image_path }}" alt="Uploaded Image">
+        </div>
+        {% endif %}
+    </div>
 </body>
 </html>
