@@ -10,7 +10,7 @@ app = Flask(__name__)
 MODEL_PATH = "model.h5"
 model = tf.keras.models.load_model(MODEL_PATH)
 
-# ✅ Define Class Labels
+# ✅ Define Class Labels (trained with Plant___Disease format)
 class_labels = ['Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
                 'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',
                 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',
@@ -28,7 +28,7 @@ class_labels = ['Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_
 IMG_SIZE = (224, 224)
 
 def predict_image(img_path):
-    """Load and predict image class"""
+    """Load and predict image class, returning only disease name"""
     img = image.load_img(img_path, target_size=IMG_SIZE)
     img_array = image.img_to_array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
@@ -37,7 +37,13 @@ def predict_image(img_path):
     predicted_class = class_labels[np.argmax(prediction)]
     confidence = np.max(prediction) * 100
 
-    return predicted_class, confidence
+    # ✅ Remove plant name and return only disease name
+    if "___" in predicted_class:
+        disease_name = predicted_class.split("___")[1].replace("_", " ")
+    else:
+        disease_name = predicted_class.replace("_", " ")
+
+    return disease_name, confidence
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -47,7 +53,7 @@ def index():
             file_path = os.path.join("static", image_file.filename)
             image_file.save(file_path)
 
-            # ✅ Get Prediction
+            # ✅ Get Prediction (disease name only)
             predicted_label, confidence = predict_image(file_path)
             return render_template("index.html", image_path=file_path, label=predicted_label, confidence=confidence)
 
