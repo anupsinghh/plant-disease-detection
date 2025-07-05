@@ -6,11 +6,11 @@ import os
 
 app = Flask(__name__)
 
-# ✅ Load Model
+# oad Model
 MODEL_PATH = "model.h5"
 model = tf.keras.models.load_model(MODEL_PATH)
 
-# ✅ Define Class Labels (trained with Plant___Disease format)
+# Define Class Labels (trained with Plant___Disease format)
 class_labels = ['Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
                 'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',
                 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',
@@ -37,7 +37,6 @@ def predict_image(img_path):
     predicted_class = class_labels[np.argmax(prediction)]
     confidence = np.max(prediction) * 100
 
-    # ✅ Remove plant name and return only disease name
     if "___" in predicted_class:
         disease_name = predicted_class.split("___")[1].replace("_", " ")
     else:
@@ -53,7 +52,7 @@ def index():
             file_path = os.path.join("static", image_file.filename)
             image_file.save(file_path)
 
-            # ✅ Get Prediction (disease name only)
+            # Get Prediction (disease name only)
             predicted_label, confidence = predict_image(file_path)
             return render_template("index.html", image_path=file_path, label=predicted_label, confidence=confidence)
 
