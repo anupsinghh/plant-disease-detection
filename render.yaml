@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: plant-disease-detection
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
-    runtime: python
-    pythonVersion: 3.10.13
