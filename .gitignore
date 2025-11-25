@@ -5,7 +5,7 @@ PlantVillage/
 # Ignore build and cache files
 build/
 *.tflite
-*.h5
+#*.h5
 
 # Ignore Python virtual environment (if used)
 venv/
